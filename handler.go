@@ -82,7 +82,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		Message: &ses.Message{
 			Body: &ses.Body{
 				Text: &ses.Content{
-					Data:aws.String(message.Message),
+					Data:aws.String(message.Message + "\n From: " + message.Name + " - " + message.Email),
 				},
 			},
 			Subject: &ses.Content{
@@ -92,7 +92,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		Destination: &ses.Destination{
 			ToAddresses:[]*string{aws.String(toEmail)},
 		},
-		Source:aws.String(message.Email),
+		Source:aws.String(toEmail),
 	}
 
 	_, err = emailClient.SendEmail(emailParams)
